@@ -1,6 +1,6 @@
-# airflow demo
+# Airflow HA Demo
 
-2 web (pg) + 2 scheduler (pg) + 2 worker ((LocalExecutor), (pg, CeleryExecutor))
+2 webserver (PG) + 2 scheduler (PG) + 2 worker ((LocalExecutor), (PG, CeleryExecutor))
 
 ## Preparation
 
