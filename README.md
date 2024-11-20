@@ -7,7 +7,7 @@
 ### Database: PG
 
 ```sh
-# Install pg
+# Install PG
 mkdir -p ./pg/pgdata && chown 999 ./pg/pgdata
 docker run \
 -d \
@@ -30,7 +30,7 @@ docker exec -it -u postgres pg psql -c "CREATE DATABASE airflow OWNER airflow"
 ### (Optional) Logging Storage: S3
 
 ```sh
-# Install pg
+# Install MinIO
 mkdir -p ./s3/
 docker run \
 -d \
@@ -69,7 +69,7 @@ docker run \
 rabbitmq:3-management
 ```
 
-## airflow: node-01
+## Airflow: node-01
 
 ### Installation
 
@@ -88,7 +88,7 @@ pip install "apache-airflow[celery,postgres,amazon]==${AIRFLOW_VERSION}" --const
 ### Initiate database (Execute Once)
 
 ```sh
-export AIRFLOW_HOME="/workspaces/codespaces-blank/node-01/airflow_home"
+export AIRFLOW_HOME="/workspaces/airflow-ha-demo/node-01/airflow_home"
 airflow db migrate
 airflow users create --username admin --password admin123 --firstname admin --lastname admin --role Admin --email admin@admin.com
 ```
@@ -96,7 +96,7 @@ airflow users create --username admin --password admin123 --firstname admin --la
 ### (Optional) Logging Storage: S3 connection
 
 ```sh
-export AIRFLOW_HOME="/workspaces/codespaces-blank/node-01/airflow_home"
+export AIRFLOW_HOME="/workspaces/airflow-ha-demo/node-01/airflow_home"
 airflow connections \
 add 'minio' \
 --conn-type 'aws' \
@@ -108,7 +108,7 @@ add 'minio' \
 ### Start webserver
 
 ```sh
-export AIRFLOW_HOME="/workspaces/codespaces-blank/node-01/airflow_home"
+export AIRFLOW_HOME="/workspaces/airflow-ha-demo/node-01/airflow_home"
 airflow webserver --port 8080
 ```
 
@@ -118,7 +118,7 @@ airflow webserver --port 8080
 
 ```sh
 source ./node-01/airflow/bin/activate
-export AIRFLOW_HOME="/workspaces/codespaces-blank/node-01/airflow_home"
+export AIRFLOW_HOME="/workspaces/airflow-ha-demo/node-01/airflow_home"
 airflow scheduler
 ```
 
@@ -128,11 +128,11 @@ airflow scheduler
 
 ```sh
 source ./node-01/airflow/bin/activate
-export AIRFLOW_HOME="/workspaces/codespaces-blank/node-01/airflow_home"
+export AIRFLOW_HOME="/workspaces/airflow-ha-demo/node-01/airflow_home"
 airflow celery worker
 ```
 
-## airflow: node-02
+## Airflow: node-02
 
 ### Installation
 
@@ -151,7 +151,7 @@ pip install "apache-airflow[celery,postgres,amazon]==${AIRFLOW_VERSION}" --const
 ### Start webserver
 
 ```sh
-export AIRFLOW_HOME="/workspaces/codespaces-blank/node-02/airflow_home"
+export AIRFLOW_HOME="/workspaces/airflow-ha-demo/node-02/airflow_home"
 export AIRFLOW__LOGGING__WORKER_LOG_SERVER_PORT=8893
 airflow webserver --port 8081
 ```
@@ -162,7 +162,7 @@ airflow webserver --port 8081
 
 ```sh
 source ./node-02/airflow/bin/activate
-export AIRFLOW_HOME="/workspaces/codespaces-blank/node-02/airflow_home"
+export AIRFLOW_HOME="/workspaces/airflow-ha-demo/node-02/airflow_home"
 export AIRFLOW__LOGGING__WORKER_LOG_SERVER_PORT=8893
 airflow scheduler
 ```
@@ -173,7 +173,7 @@ airflow scheduler
 
 ```sh
 source ./node-02/airflow/bin/activate
-export AIRFLOW_HOME="/workspaces/codespaces-blank/node-02/airflow_home"
+export AIRFLOW_HOME="/workspaces/airflow-ha-demo/node-02/airflow_home"
 export AIRFLOW__LOGGING__WORKER_LOG_SERVER_PORT=8893
 airflow celery worker
 ```
