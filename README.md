@@ -183,6 +183,27 @@ airflow celery worker
 ### haproxy
 
 ```sh
+# HAProxy config
+mkdir -p ./ha/haproxy
+cat > ./ha/haproxy/haproxy.cfg <<-EOF
+listen stats
+    mode http
+    bind 0.0.0.0:60000
+    stats enable
+    stats uri /haproxy
+
+frontend myfrontend
+    bind 0.0.0.0:18080
+    default_backend mybackend
+
+backend mybackend
+    mode http
+    balance roundrobin
+    server server1 127.0.0.1:8080 check
+    server server2 127.0.0.1:8081 check backup
+EOF
+
+# Run HAProxy
 docker run \
 -d \
 --name haproxy \
